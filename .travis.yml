@@ -34,9 +34,5 @@ script:
   # Get reference to our pod
   - export POD_NAME=$(microk8s.kubectl get pods --namespace default -l "app.kubernetes.io/name=bitwarden" -o jsonpath="{.items[0].metadata.name}")
 
-  # Port forward our pod
-  - microk8s.kubectl port-forward $POD_NAME 31111:80
-
-  # Test that the HTTP vault is presented
-  - curl -s localhost:31111 | grep "Bitwarden Web Vault"
-
+  # Call our helper script
+  - ./.test.sh
