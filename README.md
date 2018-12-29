@@ -27,6 +27,23 @@ This will setup `bitwarden_rs` with a persistent storage and a backup volume, wi
 HTTPS certificates will automatically be generated using [Let's Encrypt](https://letsencrypt.org/) and HTTPS will be terminated at the Ingress Controller.
 *This assumes that a [Kubernetes NGINX Ingress Controller](https://github.com/kubernetes/ingress-nginx) is running, and that [cert-manager](https://github.com/jetstack/cert-manager) has been set up and configured. See [here (ingress)](https://github.com/icicimov/kubernetes-bitwarden_rs#nginx-proxy) and [here (cert-manager)](https://github.com/icicimov/kubernetes-bitwarden_rs#lets-encrypt) for examples on how to set either up.*
 
+If you do not have Ingress and cert-manager set up, you can disable ingressing completely, by deploying with:
+```
+helm install --wait --set "ingress.enabled=false"
+```
+You will however need another way to access the bitwarden pod, for instance via port-forwarding:
+```
+export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=bitwarden" -o jsonpath="{.items[0].metadata.name}")
+kubectl port-forward $POD_NAME 31111:80
+```
+
+# Removal
+To remove the installation run:
+```
+helm delete --purge $(helm list | grep "bitwarden" | cut -f1)
+```
+
+
 ## Configuration
 Several konfiguration options are available, they can be seen in `values.yaml`, and override like above using `--set` or using `--values`, see more [here](https://docs.helm.sh/helm/#helm-install).
 
