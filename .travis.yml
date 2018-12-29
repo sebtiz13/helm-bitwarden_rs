@@ -14,14 +14,14 @@ before_script:
   - sudo apt-get install -y snapd
 
   # Install microk8s and set it up
-  - snap install microk8s --classic
+  - sudo snap install microk8s --classic
   - microk8s.start
   - microk8s.status --wait-ready
   - microk8s.enable dns storage
   - microk8s.status --wait-ready
 
   # Install help and set it up
-  - snap install helm --classic
+  - sudo snap install helm --classic
   - helm init
 
 script:
