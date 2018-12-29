@@ -22,14 +22,14 @@ before_script:
 
   # Install help and set it up
   - sudo snap install helm --classic
-  - helm init
+  - helm init --wait
 
 script:
   # Debug print cluster information
   - microk8s.kubectl cluster-info
 
   # Install our helm chart
-  - helm install --set "ingress.enabled=false" .
+  - helm install --wait --set "ingress.enabled=false" .
 
   # Get reference to our pod
   - export POD_NAME=$(microk8s.kubectl get pods --namespace default -l "app.kubernetes.io/name=bitwarden" -o jsonpath="{.items[0].metadata.name}")
