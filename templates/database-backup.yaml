@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  schedule: {{ .Values.backup.schedule }}
+  schedule: {{ .Values.backup.schedule | quote }}
   jobTemplate:
     spec:
       template:
