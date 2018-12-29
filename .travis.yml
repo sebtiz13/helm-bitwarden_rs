@@ -1,0 +1,29 @@
+language: bash
+
+branches:
+  only:
+    - master
+
+sudo: required
+
+dist: xenial
+
+before_script:
+  # Install snapd, which we need to install microk8s
+  - sudo apt-get update
+  - sudo apt-get install -y snapd
+
+  # Install microk8s and set it up
+  - snap install microk8s --classic
+  - microk8s.start
+  - microk8s.status --wait-ready
+  - microk8s.enable dns storage
+  - microk8s.status --wait-ready
+
+  # Install help and set it up
+  - snap install helm --classic
+  - helm init
+
+script:
+  # Debug print cluster information
+  - microk8s.kubectl cluster-info
