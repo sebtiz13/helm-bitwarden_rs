@@ -45,7 +45,7 @@ bitwarden:
   # # Number of workers to spin up for the service
   # # See: https://github.com/dani-garcia/bitwarden_rs#changing-the-number-of-workers
   # rocket_workers: 10
-  
+
   # # SMTP settings, for sending out emails
   # # See: https://github.com/dani-garcia/bitwarden_rs/blob/master/README.md#smtp-configuration
   # smtp_host: smtp.domain.tld
@@ -67,11 +67,11 @@ bitwarden:
   # # Logging to a specific file
   # # See: https://github.com/dani-garcia/bitwarden_rs#logging
   # log_file=/data/bitwarden.log
-  
+
   # Port to serve http requests on
   # TODO: Cannot be changed currently
-  rocket_port: 80 
-  
+  rocket_port: 80
+
   # NOTE: HTTPS cannot be set here, as it is derived from the ingress configuration below.
   # NOTE: DATA_FOLDER cannot be set here, as it is derived from the storage.path below.
   # TODO: Support DATABASE_URL, ATTACHMENTS_FOLDER, ICON_CACHE_FOLDER
