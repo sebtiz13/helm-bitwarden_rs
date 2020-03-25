@@ -44,14 +44,14 @@ spec:
         - mountPath: {{ .Values.storage.path }}
           name: data-storage
         {{ end }}
+        resources:
+          {{- toYaml .Values.deployment.resources | nindent 10 }}
       {{ if .Values.storage.enabled -}}
       volumes:
       - name: data-storage
         persistentVolumeClaim:
          claimName: {{ $fullName }}-pv
       {{ end }}
-      resources:
-        {{- toYaml .Values.deployment.resources | nindent 12 }}
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
