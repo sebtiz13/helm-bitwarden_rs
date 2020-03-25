@@ -51,7 +51,7 @@ bitwarden:
   # smtp_host: smtp.domain.tld
   # smtp_from: bitwarden@domain.tld
   # smtp_port: 587
-  # smtp_sll: true
+  # smtp_ssl: true
   # smtp_username: username
   # smtp_password: password
 
