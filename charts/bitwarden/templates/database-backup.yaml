@@ -52,15 +52,15 @@ spec:
             {{- toYaml .Values.backup.resources | nindent 12 }}
           {{- with .Values.backup.nodeSelector }}
           nodeSelector:
-            {{- toYaml . | nindent 8 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
-        {{- with .Values.backup.affinity }}
+          {{- with .Values.backup.affinity }}
           affinity:
-            {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- with .Values.backup.tolerations }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.backup.tolerations }}
           tolerations:
-            {{- toYaml . | nindent 8 }}
-        {{- end }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 {{- end }}
 {{- end }}
