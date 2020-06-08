@@ -48,8 +48,10 @@ spec:
             persistentVolumeClaim:
               claimName: {{ $fullName }}-backup-pv
           restartPolicy: OnFailure
+          {{- with .Values.backup.resources }}
           resources:
-            {{- toYaml .Values.backup.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.backup.nodeSelector }}
           nodeSelector:
             {{- toYaml . | nindent 12 }}
