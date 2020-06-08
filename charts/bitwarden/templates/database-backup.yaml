@@ -12,16 +12,16 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   schedule: {{ .Values.backup.schedule | quote }}
+  # Disallow concurrency if writing the same file
+  {{ if .Values.backup.timestamp -}}
+  concurrencyPolicy: Allow
+  {{ else }}
+  concurrencyPolicy: Forbid
+  {{ end }}
   jobTemplate:
     spec:
       template:
         spec:
-          # Disallow concurrency if writing the same file
-          {{ if .Values.backup.timestamp -}}
-          concurrencyPolicy: Allow
-          {{ else }}
-          concurrencyPolicy: Forbid
-          {{ end }}
           containers:
           - name: {{ $fullName }}-database-backup
             image: "{{ .Values.backup.image.repository }}:{{ .Values.backup.image.tag }}"
