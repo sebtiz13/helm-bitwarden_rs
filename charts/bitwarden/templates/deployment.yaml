@@ -44,8 +44,10 @@ spec:
         - mountPath: {{ .Values.storage.path }}
           name: data-storage
         {{ end }}
-        resources:
-          {{- toYaml .Values.deployment.resources | nindent 10 }}
+      {{- with .Values.deployment.resources }}
+      resources:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{ if .Values.storage.enabled -}}
       volumes:
       - name: data-storage

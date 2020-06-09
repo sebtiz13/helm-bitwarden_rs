@@ -12,16 +12,16 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   schedule: {{ .Values.backup.schedule | quote }}
+  # Disallow concurrency if writing the same file
+  {{ if .Values.backup.timestamp -}}
+  concurrencyPolicy: Allow
+  {{ else }}
+  concurrencyPolicy: Forbid
+  {{ end }}
   jobTemplate:
     spec:
       template:
         spec:
-          # Disallow concurrency if writing the same file
-          {{ if .Values.backup.timestamp -}}
-          concurrencyPolicy: Allow
-          {{ else }}
-          concurrencyPolicy: Forbid
-          {{ end }}
           containers:
           - name: {{ $fullName }}-database-backup
             image: "{{ .Values.backup.image.repository }}:{{ .Values.backup.image.tag }}"
@@ -48,19 +48,21 @@ spec:
             persistentVolumeClaim:
               claimName: {{ $fullName }}-backup-pv
           restartPolicy: OnFailure
+          {{- with .Values.backup.resources }}
           resources:
-            {{- toYaml .Values.backup.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.backup.nodeSelector }}
           nodeSelector:
-            {{- toYaml . | nindent 8 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
-        {{- with .Values.backup.affinity }}
+          {{- with .Values.backup.affinity }}
           affinity:
-            {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- with .Values.backup.tolerations }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.backup.tolerations }}
           tolerations:
-            {{- toYaml . | nindent 8 }}
-        {{- end }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 {{- end }}
 {{- end }}
