@@ -68,9 +68,8 @@ bitwarden:
   # # See: https://github.com/dani-garcia/bitwarden_rs#logging
   # log_file=/data/bitwarden.log
 
-  # Port to serve http requests on
-  # TODO: Cannot be changed currently
-  rocket_port: 80
+  # Port to serve http requests on. Define it accordingly to the service's target_port
+  rocket_port: 8080
 
   # NOTE: HTTPS cannot be set here, as it is derived from the ingress configuration below.
   # NOTE: DATA_FOLDER cannot be set here, as it is derived from the storage.path below.
@@ -91,11 +90,17 @@ deployment:
   tolerations: []
   affinity: {}
 
+securityContext:
+  enabled: false
+  runAsNonRoot: true
+  fsGroup: 1000
+  runAsUser: 1000
 
 # Should not be changed
 service:
   type: ClusterIP
   port: 80
+  target_port: 8080
 
 
 # Settings regarding persistent storage
