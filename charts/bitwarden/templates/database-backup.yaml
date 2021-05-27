@@ -40,6 +40,10 @@ spec:
               name: data-storage
             - mountPath: {{ .Values.backup.path }}
               name: backup-storage
+            {{- with .Values.backup.resources }}
+            resources:
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
           volumes:
           - name: data-storage
             persistentVolumeClaim:
@@ -48,10 +52,6 @@ spec:
             persistentVolumeClaim:
               claimName: {{ $fullName }}-backup-pv
           restartPolicy: OnFailure
-          {{- with .Values.backup.resources }}
-          resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           {{- with .Values.backup.nodeSelector }}
           nodeSelector:
             {{- toYaml . | nindent 12 }}

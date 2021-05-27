@@ -54,9 +54,9 @@ spec:
           name: data-storage
         {{ end }}
       {{- with .Values.deployment.resources }}
-      resources:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{ if .Values.storage.enabled -}}
       volumes:
       - name: data-storage
