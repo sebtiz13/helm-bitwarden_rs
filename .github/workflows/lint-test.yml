@@ -9,17 +9,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Create kind cluster
-        uses: helm/kind-action@v1.0.0-alpha.3
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
         with:
-          install_local_path_provisioner: true
+          version: v3.6.3
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Setup chart-testing
+        uses: helm/chart-testing-action@v2.1.0
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed)
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+          fi
 
       - name: Run chart-testing (lint)
-        uses: helm/chart-testing-action@v1.0.0-alpha.2
-        with:
-          command: lint
+        run: ct lint
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.2.0
+        if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        uses: helm/chart-testing-action@v1.0.0-alpha.2
-        with:
-          command: install
+        run: ct install
+        if: steps.list-changed.outputs.changed == 'true'
