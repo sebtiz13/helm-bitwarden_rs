@@ -24,8 +24,8 @@ bitwarden:
 
   # # Websocket support for notifications
   # # See: https://github.com/dani-garcia/bitwarden_rs#enabling-websocket-notifications
-  # # TODO: Not supported currently: Needs to be added to the ingress controller
-  # websocket_enabled: false
+  websocket_enabled: true
+  websocket_port: 3012
 
   # # Needed for U2F authentification
   # # See: https://github.com/dani-garcia/bitwarden_rs#enabling-u2f-authentication
