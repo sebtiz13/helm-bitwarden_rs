@@ -39,7 +39,8 @@ spec:
       http:
         paths:
 	{{- range $ingressPaths }}
-          - path: {{ . }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
             backend:
               {{- if $newNetworkingAPI }}
               service:

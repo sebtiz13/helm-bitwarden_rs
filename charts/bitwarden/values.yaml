@@ -159,7 +159,8 @@ ingress:
     kubernetes.io/ssl-redirect: "true"
   # className: nginx
   paths:
-    - '/'
+    - path: '/'
+      pathType: ImplementationSpecific
   hosts:
     - bitwarden.domain.tld  # host
   tls:
