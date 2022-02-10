@@ -90,6 +90,10 @@ deployment:
   tolerations: []
   affinity: {}
 
+  # Passwords and sensitive data can also be provided via secrets. This can be used for ADMIN_TOKEN and SMTP_PASSWORD.
+  # Just provide the names of your secret resources that are already deployed to your namespace.
+  secrets: []
+
 securityContext:
   enabled: false
   runAsNonRoot: true
