@@ -24,8 +24,8 @@ bitwarden:
 
   # # Websocket support for notifications
   # # See: https://github.com/dani-garcia/bitwarden_rs#enabling-websocket-notifications
-  # # TODO: Not supported currently: Needs to be added to the ingress controller
-  # websocket_enabled: false
+  websocket_enabled: true
+  websocket_port: 3012
 
   # # Needed for U2F authentification
   # # See: https://github.com/dani-garcia/bitwarden_rs#enabling-u2f-authentication
@@ -89,6 +89,10 @@ deployment:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+  # Passwords and sensitive data can also be provided via secrets. This can be used for ADMIN_TOKEN and SMTP_PASSWORD.
+  # Just provide the names of your secret resources that are already deployed to your namespace.
+  secrets: []
 
 securityContext:
   enabled: false
@@ -155,7 +159,8 @@ ingress:
     kubernetes.io/ssl-redirect: "true"
   # className: nginx
   paths:
-    - '/'
+    - path: '/'
+      pathType: ImplementationSpecific
   hosts:
     - bitwarden.domain.tld  # host
   tls:

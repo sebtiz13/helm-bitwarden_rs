@@ -1,7 +1,9 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "bitwarden.fullname" . -}}
 {{- $ingressPaths := .Values.ingress.paths -}}
-{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+{{- $newNetworkingAPI := .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+{{- $webSocketEnabled := .Values.bitwarden.websocket_enabled }}
+{{- if $newNetworkingAPI }}
 apiVersion: networking.k8s.io/v1
 {{- else }}
 apiVersion: extensions/v1beta1
@@ -37,18 +39,45 @@ spec:
     - host: {{ . | quote }}
       http:
         paths:
-	{{- range $ingressPaths }}
-          - path: {{ . }}
+        	{{- range $ingressPaths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
             backend:
-{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+              {{- if $newNetworkingAPI }}
               service:
                 name: {{ $fullName }}
                 port:
                   name: http
-{{- else }}
+              {{- else }}
               serviceName: {{ $fullName }}
               servicePort: http
-{{- end }}
-	{{- end }}
+              {{- end }}
+	        {{- end }}
+          {{- if $webSocketEnabled }}
+          - path: /notifications/hub
+            pathType: ImplementationSpecific
+            backend:
+              {{- if $newNetworkingAPI }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  name: ws
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: ws
+              {{- end }}
+          - path: /notifications/hub/negotiate
+            pathType: ImplementationSpecific
+            backend:
+              {{- if $newNetworkingAPI }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  name: http
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: http
+              {{- end }}
+          {{- end }}
   {{- end }}
 {{- end }}
