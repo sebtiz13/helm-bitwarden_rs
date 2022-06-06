@@ -128,6 +128,9 @@ backup:
   # The maximum size of the persisted backup data
   size: 100Mi
 
+  # what storge name to be used for back up storage
+  # storageClassName: "gp2"
+
   # Cron schedule for the backup job (currently at 3:00 every night)
   schedule: "* 3 * * *"
 
