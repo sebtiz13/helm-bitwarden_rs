@@ -117,6 +117,8 @@ storage:
   path: "/bw-data"
   # The maximum size of the persisted data
   size: 100Mi
+  # what storge name to be used for data storage
+  # className: "gp2"
 
 
 # Settings regarding persistent backup storage
