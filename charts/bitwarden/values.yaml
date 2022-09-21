@@ -117,6 +117,8 @@ storage:
   path: "/bw-data"
   # The maximum size of the persisted data
   size: 100Mi
+  # what storge name to be used for data storage
+  # className: "gp2"
 
 
 # Settings regarding persistent backup storage
@@ -127,6 +129,9 @@ backup:
   path: "/bw-backup"
   # The maximum size of the persisted backup data
   size: 100Mi
+
+  # what storge name to be used for back up storage
+  # storageClassName: "gp2"
 
   # Cron schedule for the backup job (currently at 3:00 every night)
   schedule: "* 3 * * *"

@@ -45,7 +45,7 @@ helm delete --purge $(helm list | grep "bitwarden" | cut -f1)
 
 
 ## Configuration
-Several konfiguration options are available, they can be seen in [`values.yaml`](https://github.com/Skeen/helm-bitwarden_rs/blob/master/values.yaml), and override like above using `--set` or using `--values`, see more [here](https://docs.helm.sh/helm/#helm-install).
+Several konfiguration options are available, they can be seen in [`values.yaml`](https://github.com/Skeen/helm-bitwarden_rs/blob/master/charts/bitwarden/values.yaml), and override like above using `--set` or using `--values`, see more [here](https://docs.helm.sh/helm/#helm-install).
 
 ## Screenshot
 

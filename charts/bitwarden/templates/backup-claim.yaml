@@ -16,6 +16,9 @@ spec:
   resources:
     requests:
       storage: {{ .Values.backup.size }}
+  {{- if .Values.backup.storageClassName }}
+  storageClassName: {{ .Values.backup.storageClassName }}
+  {{ end }}
 status: {}
 {{- end }}
 {{- end }}
