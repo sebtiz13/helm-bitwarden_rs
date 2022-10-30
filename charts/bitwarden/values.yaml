@@ -73,9 +73,23 @@ bitwarden:
 
   # NOTE: HTTPS cannot be set here, as it is derived from the ingress configuration below.
   # NOTE: DATA_FOLDER cannot be set here, as it is derived from the storage.path below.
-  # TODO: Support DATABASE_URL, ATTACHMENTS_FOLDER, ICON_CACHE_FOLDER
+  # NOTE: ENABLE_DB_WAL cannot be set here, as it is derived from the database.wal below.
+  # TODO: Support ATTACHMENTS_FOLDER, ICON_CACHE_FOLDER
   # TODO: Support fail2ban?
 
+database:
+  # Database type,
+  # must be one of: 'sqlite', 'mysql' or 'postgresql'.
+  type: sqlite
+  # Enable DB Write-Ahead-Log for SQLite,
+  # disabled for other databases. https://github.com/dani-garcia/bitwarden_rs/wiki/Running-without-WAL-enabled
+  wal: true
+  # URL for external databases (mysql://user:pass@host:port/database or postgresql://user:pass@host:port/database).
+  # MySQL/MariaDB: https://github.com/dani-garcia/vaultwarden/wiki/Using-the-MariaDB-%28MySQL%29-Backend
+  # Postgresql: https://github.com/dani-garcia/vaultwarden/wiki/Using-the-PostgreSQL-Backend
+  url: ""
+  # Otherwise you can use an existing secret with key `DATABASE_URL`
+  existingSecret: null
 
 deployment:
   # Image used for the deployment
@@ -108,7 +122,7 @@ service:
 
 
 # Settings regarding persistent storage
-# TODO: Support DATABASE_URL + ATTACHMENTS_FOLDER + ICON_CACHE_FOLDER
+# TODO: Support ATTACHMENTS_FOLDER + ICON_CACHE_FOLDER
 # See: https://github.com/dani-garcia/bitwarden_rs#changing-persistent-data-location
 storage:
   # Whether storing persistent data is enabled or not

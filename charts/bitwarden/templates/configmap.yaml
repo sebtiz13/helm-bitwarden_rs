@@ -8,10 +8,13 @@ metadata:
     helm.sh/chart: {{ include "bitwarden.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-data: 
+data:
   {{- range $key, $val := .Values.bitwarden }}
   {{ $key | upper }}: {{ $val | quote }}
   {{- end}}
+  {{ if .Values.database.wal -}}
+  ENABLE_DB_WAL: {{ .Values.database.wal | quote }}
+  {{- end }}
   {{ if .Values.storage.enabled -}}
   DATA_FOLDER: {{ .Values.storage.path }}
   {{ end }}
