@@ -158,10 +158,10 @@ backup:
 # Ingress configuration
 ingress:
   enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-    kubernetes.io/ssl-redirect: "true"
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    # kubernetes.io/ssl-redirect: "true"
   # className: nginx
   paths:
     - path: '/'
