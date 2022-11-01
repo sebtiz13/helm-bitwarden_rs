@@ -91,13 +91,9 @@ spec:
       - name: force-smtp-env
         image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
         imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
-        args:
-          - >
-            echo "remove vars";
-            [ ! -f "$DATA_FOLDER/config.json" ] || sed -i ':a;N;$!ba;s/[[:space:]]"smtp_\(.*\)": \(.*\),\n//g' $DATA_FOLDER/config.json;
         command:
           - sh
-          - '-c'
+          - /scripts/update-config.sh
         envFrom:
         - configMapRef:
             name: {{ $fullName }}-conf
@@ -109,8 +105,10 @@ spec:
           {{- end }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-        {{ if .Values.storage.enabled -}}
         volumeMounts:
+        - mountPath: /scripts
+          name: conf-scripts
+        {{ if .Values.storage.enabled -}}
         - mountPath: {{ .Values.storage.path }}
           name: data-storage
         {{ end }}
@@ -119,8 +117,12 @@ spec:
           {{- toYaml . | nindent 10 }}
         {{- end }}
       {{- end }}
-      {{ if .Values.storage.enabled -}}
       volumes:
+      - name: conf-scripts
+        configMap:
+          defaultMode: 493
+          name: {{ $fullName }}-scripts
+      {{ if .Values.storage.enabled -}}
       - name: data-storage
         persistentVolumeClaim:
          claimName: {{ $fullName }}-pv
