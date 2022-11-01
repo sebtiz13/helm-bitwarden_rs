@@ -32,6 +32,16 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Generate config hash to checksum for automatic restart
+*/}}
+{{- define "bitwarden.config-hash" -}}
+{{- $config := print (toJson .Values.bitwarden) "-" (toJson .Values.storage) -}}
+{{- $database := print (toJson .Values.database) -}}
+{{- $smtp := print (toJson .Values.smtp) -}}
+{{- print $config "-" $database "-" $smtp -}}
+{{- end -}}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "bitwarden.ingress.annotations" -}}
