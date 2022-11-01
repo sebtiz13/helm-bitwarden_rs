@@ -30,3 +30,18 @@ Create chart name and version as used by the chart label.
 {{- define "bitwarden.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Create chart name and version as used by the chart label.
+*/}}
+{{- define "bitwarden.ingress.annotations" -}}
+{{- if .Values.ingress.annotations -}}
+{{- toYaml .Values.ingress.annotations }}
+{{- else -}}
+kubernetes.io/ingress.class: nginx
+{{- if .Values.ingress.tls }}
+kubernetes.io/tls-acme: "true"
+kubernetes.io/ssl-redirect: "true"
+{{- end -}}
+{{- end -}}
+{{- end -}}
