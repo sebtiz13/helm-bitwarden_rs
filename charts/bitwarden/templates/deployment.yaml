@@ -31,6 +31,14 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ $fullName }}-conf
+        {{- if .Values.smtp.enabled }}
+        - secretRef:
+          {{- if .Values.smtp.existingSecret }}
+            name: {{ .Values.smtp.existingSecret }}
+          {{- else }}
+            name: {{ $fullName }}-smtp
+          {{- end }}
+        {{- end }}
         {{- if .Values.deployment.secrets }}
         {{- range .Values.deployment.secrets }}
         - secretRef:

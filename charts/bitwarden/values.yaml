@@ -47,7 +47,8 @@ bitwarden:
   # rocket_workers: 10
 
   # # SMTP settings, for sending out emails
-  # # See: https://github.com/dani-garcia/bitwarden_rs/blob/master/README.md#smtp-configuration
+  # @deprecated prefer stmp values to use secret for better security
+  # # See: https://github.com/dani-garcia/vaultwarden/wiki/SMTP-Configuration
   # smtp_host: smtp.domain.tld
   # smtp_from: bitwarden@domain.tld
   # smtp_port: 587
@@ -76,6 +77,18 @@ bitwarden:
   # TODO: Support DATABASE_URL, ATTACHMENTS_FOLDER, ICON_CACHE_FOLDER
   # TODO: Support fail2ban?
 
+# SMTP settings, for sending out emails
+# See: https://github.com/dani-garcia/vaultwarden/wiki/SMTP-Configuration
+smtp:
+  enabled: false
+  existingSecret: null
+  host: smtp.domain.tld
+  from: bitwarden@domain.tld
+  port: 587
+  security: starttls
+  username: username
+  password: password
+  mechanism: ""
 
 deployment:
   # Image used for the deployment
