@@ -31,6 +31,14 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ $fullName }}-conf
+        {{- if or (eq .Values.database.type "mysql") (eq .Values.database.type "postgresql") }}
+        - secretRef:
+          {{- if .Values.database.existingSecret }}
+            name: {{ .Values.database.existingSecret }}
+          {{- else }}
+            name: {{ $fullName }}-database
+          {{- end }}
+        {{- end }}
         {{- if .Values.deployment.secrets }}
         {{- range .Values.deployment.secrets }}
         - secretRef:
