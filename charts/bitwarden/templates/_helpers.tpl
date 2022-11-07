@@ -31,8 +31,19 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+
 {{/*
-Create chart name and version as used by the chart label.
+Generate config hash to checksum for automatic restart
+*/}}
+{{- define "bitwarden.config-hash" -}}
+{{- $config := print (toJson .Values.bitwarden) "-" (toJson .Values.storage) -}}
+{{- $database := print (toJson .Values.database) -}}
+{{- $smtp := print (toJson .Values.smtp) -}}
+{{- print $config "-" $database "-" $smtp -}}
+{{- end -}}
+
+{{/*
+Define default ingress annotations if are not provided
 */}}
 {{- define "bitwarden.ingress.annotations" -}}
 {{- if .Values.ingress.annotations -}}

@@ -19,6 +19,8 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "bitwarden.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        bitwarden-config-hash: {{ include "bitwarden.config-hash" . | sha256sum }}
     spec:
       {{- if .Values.securityContext.enabled }}
       securityContext:
